@@ -43,3 +43,23 @@ export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
   }
   return res
 }
+
+/**
+ * 加密处理
+ * 2018年7月3日13:44:25 添加sha256算法
+ * @author niaddice
+ */
+export const encryption = (params) => {
+  let {
+    data,
+    type,
+    param
+  } = params
+  let result = JSON.parse(JSON.stringify(data))
+  if (type === 'Base64') {
+    param.forEach(ele => {
+      result[ele] = btoa(result[ele])
+    })
+  }
+  return result
+}

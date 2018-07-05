@@ -3,8 +3,8 @@
     <div class="site-content__wrapper">
       <div class="site-content">
         <div class="brand-info">
-          <h2 class="brand-info__text">renren-fast-vue</h2>
-          <p class="brand-info__intro">renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。</p>
+          <h2 class="brand-info__text">erp-admin-vue</h2>
+          <p class="brand-info__intro">erp-admin-vue基于vue、element-ui构建开发，实现erp-admin后台管理前端功能，提供一套更优的前端解决方案。</p>
         </div>
         <div class="login-main">
           <h3 class="login-title">管理员登录</h3>
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import { getUUID } from '@/utils'
+  import { getUUID, encryption } from '@/utils'
   export default {
     data () {
       return {
@@ -68,13 +68,19 @@
       // 提交表单
       dataFormSubmit () {
         this.$refs['dataForm'].validate((valid) => {
+          const pwd = encryption({
+            data: this.dataForm,
+            type: 'Base64',
+            param: ['userName', 'password']
+          })
+          console.log(pwd.password)
           if (valid) {
             this.$http({
               url: this.$http.adornUrl('/sys/login'),
               method: 'post',
               data: this.$http.adornData({
                 'username': this.dataForm.userName,
-                'password': this.dataForm.password,
+                'password': pwd.password,
                 'uuid': this.dataForm.uuid,
                 'captcha': this.dataForm.captcha
               })
